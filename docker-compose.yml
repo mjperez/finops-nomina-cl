@@ -6,7 +6,10 @@ services:
     volumes: ["postgres_data:/var/lib/postgresql/data"]
   backend:
     build: ./backend
-    env_file: .env
+    env_file:
+      - .env.example
+      - path: .env
+        required: false
     environment:
       - DATABASE_URL=postgresql+psycopg://finops_user:finops_pass@db:5432/finops_nomina
     ports: ["8000:8000"]
