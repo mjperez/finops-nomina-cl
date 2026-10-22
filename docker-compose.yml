@@ -1,20 +1,19 @@
 services:
   db:
     image: postgres:16-alpine
-    env_file: 
-      - .env.example
-      - path: .env
-        required: false
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-finops_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-finops_pass}
+      - POSTGRES_DB=${POSTGRES_DB:-finops_nomina}
     ports: ["5432:5432"]
     volumes: ["postgres_data:/var/lib/postgresql/data"]
   backend:
     build: ./backend
     env_file:
-      - .env.example
       - path: .env
         required: false
     environment:
-      - DATABASE_URL=postgresql+psycopg://finops_user:finops_pass@db:5432/finops_nomina
+      - DATABASE_URL=postgresql+psycopg://${POSTGRES_USER:-finops_user}:${POSTGRES_PASSWORD:-finops_pass}@db:5432/${POSTGRES_DB:-finops_nomina}
     ports: ["8000:8000"]
     depends_on: [db]
   frontend:
