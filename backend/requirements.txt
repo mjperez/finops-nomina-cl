@@ -4,3 +4,5 @@ pydantic-settings
 pytest
 httpx2
 ruff
+sqlalchemy
+psycopg[binary]
